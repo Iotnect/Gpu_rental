@@ -30,9 +30,10 @@ const faqs = [
 ];
 
 const ringgit = new Intl.NumberFormat('en-MY', { style: 'currency', currency: 'MYR' });
+const brandName = 'NeoPark';
 
 function Brand() {
-  return <a className="brand" href="#top"><img src={`${import.meta.env.BASE_URL}tensorbay.svg`} alt="" width="32" height="32" />tensorbay<span>.</span></a>;
+  return <a className="brand" href="#top"><img src={`${import.meta.env.BASE_URL}neopark.svg`} alt="" width="32" height="32" />{brandName}</a>;
 }
 
 function App() {
@@ -47,14 +48,14 @@ function App() {
 
   function downloadConfig() {
     const config = [
-      'Tensorbay GPU configuration', '', `GPU: NVIDIA ${gpu.name}`, `Memory per GPU: ${gpu.memory} GB`,
+      `${brandName} GPU configuration`, '', `GPU: NVIDIA ${gpu.name}`, `Memory per GPU: ${gpu.memory} GB`,
       `GPU count: ${count}`, `Runtime: ${hours} hours`, `Sample rate: ${hourlyRate} per GPU-hour`,
       `Estimated compute cost: ${estimate}`, '', 'Planning estimate only. Rates and inventory are illustrative.', '',
     ].join('\n');
     const url = URL.createObjectURL(new Blob([config], { type: 'text/plain;charset=utf-8' }));
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'tensorbay-gpu-configuration.txt';
+    link.download = 'neopark-gpu-configuration.txt';
     link.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }

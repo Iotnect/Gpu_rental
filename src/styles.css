@@ -36,7 +36,6 @@ h1, h2, h3, p { margin: 0; }
 .site-header { position: sticky; top: 0; z-index: 3; background: #0c0b12f2; border-bottom: 1px solid var(--line); backdrop-filter: blur(16px); }
 .header-inner { height: 72px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 28px; }
 .brand { display: inline-flex; justify-self: start; align-items: center; gap: 9px; min-height: 44px; font-size: 1.3rem; font-weight: 700; letter-spacing: -.055em; }
-.brand span { margin-left: -8px; color: var(--mint); }
 .main-nav { display: flex; gap: 34px; }
 .main-nav a, .footer a:last-child { display: inline-flex; align-items: center; min-height: 44px; font-size: .88rem; color: var(--muted); }
 .main-nav a:hover, .footer a:last-child:hover { color: var(--mint); }
