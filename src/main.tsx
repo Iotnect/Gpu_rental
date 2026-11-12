@@ -7,9 +7,9 @@ import {
 import './styles.css';
 
 const gpus = [
-  { id: '4090', name: 'RTX 4090', memory: 24, hourly: 0.55, role: 'Prototyping & rendering' },
-  { id: 'a100', name: 'A100', memory: 80, hourly: 1.4, role: 'Fine-tuning & batch inference' },
-  { id: 'h100', name: 'H100', memory: 80, hourly: 2.5, role: 'Large models & distributed jobs' },
+  { id: '4090', name: 'RTX 4090', memory: 24, hourlySen: 224, role: 'Prototyping & rendering' },
+  { id: 'a100', name: 'A100', memory: 80, hourlySen: 570, role: 'Fine-tuning & batch inference' },
+  { id: 'h100', name: 'H100', memory: 80, hourlySen: 1019, role: 'Large models & distributed jobs' },
 ] as const;
 
 type GpuId = typeof gpus[number]['id'];
@@ -28,7 +28,7 @@ const faqs = [
   { question: 'Can I book an instance from this page?', answer: 'This page is a preview of the GPU rental product. You can explore example hardware and download a configuration for your planning. Live inventory, billing, and instance booking are pending.' },
 ];
 
-const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+const ringgit = new Intl.NumberFormat('en-MY', { style: 'currency', currency: 'MYR' });
 
 function Brand() {
   return <a className="brand" href="#top"><img src={`${import.meta.env.BASE_URL}tensorbay.svg`} alt="" width="32" height="32" />tensorbay<span>.</span></a>;
@@ -41,13 +41,14 @@ function App() {
   const [count, setCount] = useState(1);
   const [hours, setHours] = useState(8);
   const gpu = gpus.find((option) => option.id === gpuId)!;
-  const estimate = dollars.format(gpu.hourly * count * hours);
+  const hourlyRate = ringgit.format(gpu.hourlySen / 100);
+  const estimate = ringgit.format((gpu.hourlySen * count * hours) / 100);
 
   function downloadConfig() {
     const config = [
       'Tensorbay GPU configuration', '', `GPU: NVIDIA ${gpu.name}`, `Memory per GPU: ${gpu.memory} GB`,
-      `GPU count: ${count}`, `Runtime: ${hours} hours`, `Sample rate: ${dollars.format(gpu.hourly)} USD per GPU-hour`,
-      `Estimated compute cost: ${estimate} USD`, '', 'Planning estimate only. Rates and inventory are illustrative.', '',
+      `GPU count: ${count}`, `Runtime: ${hours} hours`, `Sample rate: ${hourlyRate} per GPU-hour`,
+      `Estimated compute cost: ${estimate}`, '', 'Planning estimate only. Rates and inventory are illustrative.', '',
     ].join('\n');
     const url = URL.createObjectURL(new Blob([config], { type: 'text/plain;charset=utf-8' }));
     const link = document.createElement('a');
@@ -149,12 +150,12 @@ function App() {
                 ))}
               </fieldset>
               <div className="estimate">
-                <div className="estimate-heading"><span className="eyebrow">COST ESTIMATE</span><span className="sample-label">Sample rates · USD</span></div>
+                <div className="estimate-heading"><span className="eyebrow">COST ESTIMATE</span><span className="sample-label">Sample rates · MYR</span></div>
                 <div className="estimate-fields">
                   <label htmlFor="gpu-count">GPU count<span className="select-wrap"><select id="gpu-count" value={count} onChange={(event) => setCount(Number(event.target.value))}>{[1, 2, 4, 8].map((value) => <option value={value} key={value}>{value} {value === 1 ? 'GPU' : 'GPUs'}</option>)}</select><ChevronDown size={15} aria-hidden="true" /></span></label>
                   <label htmlFor="runtime">Runtime<span className="select-wrap"><select id="runtime" value={hours} onChange={(event) => setHours(Number(event.target.value))}>{[1, 4, 8, 24, 48, 72, 168].map((value) => <option value={value} key={value}>{value} {value === 1 ? 'hour' : 'hours'}</option>)}</select><ChevronDown size={15} aria-hidden="true" /></span></label>
                 </div>
-                <div className="estimate-total" aria-live="polite"><strong>{estimate}</strong><span>{dollars.format(gpu.hourly)} / GPU-hour<br />{count * hours} GPU-hours</span></div>
+                <div className="estimate-total" aria-live="polite"><strong>{estimate}</strong><span>{hourlyRate} / GPU-hour<br />{count * hours} GPU-hours</span></div>
                 <button type="button" className="button button-primary" onClick={downloadConfig}>Download configuration <Download size={17} /></button>
               </div>
             </div>
