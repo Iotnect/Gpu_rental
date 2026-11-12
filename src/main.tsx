@@ -4,6 +4,7 @@ import {
   Activity, ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Box, ChevronDown,
   CircuitBoard, Cpu, Download, Layers3, Menu, Network, Terminal, X, Zap,
 } from 'lucide-react';
+import { Hero } from './components/iotnect-hero/Hero';
 import './styles.css';
 
 const gpus = [
@@ -82,7 +83,9 @@ function App() {
       </header>
 
       <main id="main">
-        <section className="hero" aria-labelledby="hero-title">
+        <Hero />
+
+        <section className="hero" id="gpu-intro" aria-labelledby="hero-title">
           <div className="shell hero-inner">
             <div className="hero-copy">
               <p className="eyebrow hero-label"><span /> ON-DEMAND GPU RENTAL</p>

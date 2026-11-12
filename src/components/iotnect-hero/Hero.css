@@ -1,0 +1,64 @@
+.iotnect-hero {
+  --iotnect-header-height: 73px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #0a0514;
+  color: #f7e8ff;
+  min-height: calc(100svh - var(--iotnect-header-height));
+  display: flex;
+  align-items: center;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.iotnect-hero *,
+.iotnect-hero *::before,
+.iotnect-hero *::after { box-sizing: border-box; }
+.iotnect-hero .hero-brand { width: min(1220px, calc(100% - 96px)); margin-inline: auto; }
+.iotnect-hero .hero-title { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; font: inherit; letter-spacing: normal; }
+.iotnect-hero .hero-brand { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; padding-block: 24px 28px; text-align: center; }
+.iotnect-hero .hero-brand-frame { position: relative; width: min(560px, 90vw); height: clamp(250px, 48svh, 470px); flex-shrink: 0; }
+.iotnect-hero .hero-wordmark { width: min(560px, 100%); height: 140px; flex-shrink: 0; margin-top: -18px; font-family: Manrope, sans-serif; }
+.iotnect-hero .hero-wordmark .particle-text { min-height: 0; height: 100%; width: 100%; }
+.iotnect-hero .hero-brand-tagline { font-size: 9px; letter-spacing: .28em; color: #c8a6df; margin: 0 0 30px; }
+.iotnect-hero .hero-scroll { display: flex; gap: 17px; align-items: center; min-height: 44px; font-size: 8px; letter-spacing: .16em; color: #cbb5de; padding: 8px; text-decoration: none; cursor: pointer; }
+.iotnect-hero .hero-scroll:hover { color: white; }
+.iotnect-hero .hero-scroll:active { color: #f25bd0; }
+.iotnect-hero .hero-scroll:focus-visible { outline: 3px solid #ddaaff; outline-offset: 5px; }
+.iotnect-hero .hero-scroll span { font-size: 20px; line-height: 1; }
+
+.iotnect-hero .crystalized-logo { position: absolute; inset: 0; overflow: hidden; background: transparent; }
+.iotnect-hero .crystalized-logo canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .6s ease; }
+.iotnect-hero .crystalized-logo[data-ready=true] canvas { opacity: 1; }
+.iotnect-hero .crystalized-logo-fallback { display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 77%; height: 77%; max-width: 100%; object-fit: contain; background: transparent; border-radius: 12px; filter: invert(1) grayscale(1); mix-blend-mode: screen; }
+.iotnect-hero .crystalized-logo[data-ready=true] .crystalized-logo-fallback { visibility: hidden; }
+.iotnect-hero .crystalized-logo .logo-particle-intro { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; transition: opacity .6s ease; }
+.iotnect-hero .crystalized-logo[data-ready=true][data-intro-complete=false] .logo-particle-intro { opacity: 1; }
+.iotnect-hero .crystalized-logo[data-ready=true][data-intro-complete=false] .plasma-logo-canvas { opacity: 0; }
+.iotnect-hero .crystalized-logo[data-intro-complete=true] .logo-particle-intro { opacity: 0; }
+
+.iotnect-hero .hero-aurora { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 30% 35%, #7431bc38, transparent 58%), radial-gradient(ellipse at 72% 42%, #f25bd02e, transparent 55%); }
+.iotnect-hero .hero-aurora::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #0a051430, transparent 25%, transparent 65%, #0a0514); }
+.iotnect-hero .hero-aurora .aurora-canvas { mix-blend-mode: screen; }
+
+@media (max-width: 1050px) {
+  .iotnect-hero .hero-brand { width: calc(100% - 56px); }
+}
+@media (max-width: 760px) {
+  .iotnect-hero { --iotnect-header-height: 65px; }
+  .iotnect-hero .hero-brand { width: calc(100% - 40px); }
+  .iotnect-hero .hero-brand { padding-block: 20px 24px; }
+  .iotnect-hero .hero-brand-frame { width: min(480px, 100%); height: clamp(240px, 43svh, 390px); }
+  .iotnect-hero .hero-wordmark { height: 116px; margin-top: -10px; }
+  .iotnect-hero .hero-brand-tagline { font-size: 8px; margin-bottom: 22px; letter-spacing: .22em; }
+}
+@media (max-height: 650px) and (min-width: 761px) {
+  .iotnect-hero .hero-brand-frame { height: 240px; }
+  .iotnect-hero .hero-wordmark { height: 112px; }
+  .iotnect-hero .hero-brand-tagline { margin-bottom: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .iotnect-hero *, .iotnect-hero *::before, .iotnect-hero *::after { transition: none !important; animation: none !important; }
+}
