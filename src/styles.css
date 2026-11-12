@@ -15,7 +15,6 @@
   --mint: #b9fbd5;
   --lavender: #c5b6ff;
   --mono: 'IBM Plex Mono', ui-monospace, monospace;
-  --header-height: 73px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -35,7 +34,7 @@ h1, h2, h3, p { margin: 0; }
 .eyebrow { font: 500 .72rem/1.4 var(--mono); letter-spacing: .1em; }
 
 .site-header { position: sticky; top: 0; z-index: 3; background: #0c0b12f2; border-bottom: 1px solid var(--line); backdrop-filter: blur(16px); }
-.header-inner { height: calc(var(--header-height) - 1px); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 28px; }
+.header-inner { height: 72px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 28px; }
 .brand { display: inline-flex; justify-self: start; align-items: center; gap: 9px; min-height: 44px; font-size: 1.3rem; font-weight: 700; letter-spacing: -.055em; }
 .brand span { margin-left: -8px; color: var(--mint); }
 .main-nav { display: flex; gap: 34px; }
@@ -153,9 +152,8 @@ select:hover { border-color: var(--lavender); }
 }
 
 @media (max-width: 760px) {
-  :root { --header-height: 65px; }
   .shell { width: calc(100% - 40px); }
-  .header-inner { display: flex; justify-content: space-between; }
+  .header-inner { height: 64px; display: flex; justify-content: space-between; }
   .menu-toggle { display: grid; place-items: center; min-width: 44px; min-height: 44px; background: #171420; color: var(--text); border: 1px solid var(--control-line); border-radius: 6px; }
   .menu-toggle:hover { background: #262135; }
   .main-nav { position: absolute; top: 100%; left: 0; right: 0; display: none; flex-direction: column; gap: 0; padding: 8px 20px; background: var(--panel); border-bottom: 1px solid var(--control-line); }

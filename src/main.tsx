@@ -1,10 +1,9 @@
 import { StrictMode, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
-  Activity, ArrowDownRight, ArrowUpRight, Box, ChevronDown,
-  Cpu, Download, Layers3, Menu, Network, Terminal, X, Zap,
+  Activity, ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Box, ChevronDown,
+  CircuitBoard, Cpu, Download, Layers3, Menu, Network, Terminal, X, Zap,
 } from 'lucide-react';
-import { GpuStory } from './GpuStory';
 import './styles.css';
 
 const gpus = [
@@ -16,10 +15,10 @@ const gpus = [
 type GpuId = typeof gpus[number]['id'];
 
 const workloads = [
-  { id: 'workload-training', title: 'AI training', markerDetail: 'Train neural networks and fine-tune LLMs with PyTorch or Transformers.', description: 'Train neural networks and fine-tune LLMs with your own datasets and checkpoints.', stack: 'PyTorch · Transformers', icon: Network, gpu: 'h100' },
-  { id: 'workload-inference', title: 'AI inference', markerDetail: 'Run chatbots, vision models and batch inference with tools like vLLM or TensorRT.', description: 'Serve chatbots, vision models, and text pipelines. Run batch jobs or handle live requests.', stack: 'vLLM · TensorRT', icon: Zap, gpu: 'a100' },
-  { id: 'workload-rendering', title: '3D rendering', markerDetail: 'Render CGI, architectural walkthroughs and VFX with Blender, Maya or Unreal Engine.', description: 'Render high-resolution frames, architectural walkthroughs, and VFX sequences.', stack: 'Blender · Maya · Unreal Engine', icon: Box, gpu: '4090' },
-  { id: 'workload-hpc', title: 'High-performance computing', markerDetail: 'Run GPU-accelerated simulations and data analytics with tools like CUDA or RAPIDS.', description: 'Run GPU-accelerated simulations, data analytics, and quantitative models.', stack: 'CUDA · RAPIDS', icon: Activity, gpu: 'h100' },
+  { title: 'AI training', description: 'Train neural networks and fine-tune LLMs with your own datasets and checkpoints.', stack: 'PyTorch · Transformers', icon: Network, gpu: 'h100' },
+  { title: 'AI inference', description: 'Serve chatbots, vision models, and text pipelines. Run batch jobs or handle live requests.', stack: 'vLLM · TensorRT', icon: Zap, gpu: 'a100' },
+  { title: '3D rendering', description: 'Render high-resolution frames, architectural walkthroughs, and VFX sequences.', stack: 'Blender · Maya · Unreal Engine', icon: Box, gpu: '4090' },
+  { title: 'High-performance computing', description: 'Run GPU-accelerated simulations, data analytics, and quantitative models.', stack: 'CUDA · RAPIDS', icon: Activity, gpu: 'h100' },
 ] as const;
 
 const faqs = [
@@ -30,17 +29,6 @@ const faqs = [
 ];
 
 const ringgit = new Intl.NumberFormat('en-MY', { style: 'currency', currency: 'MYR' });
-const formatSen = (sen: number) => ringgit.format(sen / 100);
-const sampleGpu = gpus[1];
-const sampleCount = 1;
-const sampleHours = 8;
-const sampleRun = {
-  model: sampleGpu.name,
-  count: sampleCount,
-  hours: sampleHours,
-  hourlyRate: formatSen(sampleGpu.hourlySen),
-  total: formatSen(sampleGpu.hourlySen * sampleCount * sampleHours),
-};
 
 function Brand() {
   return <a className="brand" href="#top"><img src={`${import.meta.env.BASE_URL}tensorbay.svg`} alt="" width="32" height="32" />tensorbay<span>.</span></a>;
@@ -49,12 +37,12 @@ function Brand() {
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
-  const [gpuId, setGpuId] = useState<GpuId>(sampleGpu.id);
-  const [count, setCount] = useState(sampleCount);
-  const [hours, setHours] = useState(sampleHours);
+  const [gpuId, setGpuId] = useState<GpuId>('a100');
+  const [count, setCount] = useState(1);
+  const [hours, setHours] = useState(8);
   const gpu = gpus.find((option) => option.id === gpuId)!;
-  const hourlyRate = formatSen(gpu.hourlySen);
-  const estimate = formatSen(gpu.hourlySen * count * hours);
+  const hourlyRate = ringgit.format(gpu.hourlySen / 100);
+  const estimate = ringgit.format((gpu.hourlySen * count * hours) / 100);
 
   function downloadConfig() {
     const config = [
@@ -94,23 +82,22 @@ function App() {
       </header>
 
       <main id="main">
-        <GpuStory workloads={workloads} sample={sampleRun} />
-
-        <section className="workload-panel" id="workloads" aria-labelledby="workload-title">
-          <div className="shell section">
-            <div className="section-heading">
-              <div><p className="eyebrow section-label">WORKLOADS</p><h2 id="workload-title">What are you running?</h2></div>
-              <p>Start with your workload to find an example GPU configuration.</p>
+        <section className="hero" aria-labelledby="hero-title">
+          <div className="shell hero-inner">
+            <div className="hero-copy">
+              <p className="eyebrow hero-label"><span /> ON-DEMAND GPU RENTAL</p>
+              <h1 id="hero-title">GPU compute<br /> <em>for AI.</em></h1>
+              <p className="hero-description">Train and fine-tune models, serve live inference, or run demanding renders and simulations with rented GPUs.</p>
+              <div className="hero-actions">
+                <a className="button button-primary" href="#gpus">Explore GPUs <ArrowRight size={18} /></a>
+                <a className="button button-quiet" href="#workloads">View workloads <ArrowDown size={16} /></a>
+              </div>
             </div>
-            <div className="workload-grid">
-              {workloads.map(({ id, title, description, stack, icon: Icon, gpu: recommendedGpu }) => (
-                <article className="workload" key={id} id={id} tabIndex={-1}>
-                  <div className="workload-top"><Icon size={24} strokeWidth={1.6} /><a href="#gpus" aria-label={`Explore GPUs for ${title}`} onClick={() => setGpuId(recommendedGpu)}><ArrowUpRight size={20} /></a></div>
-                  <h3>{title}</h3>
-                  <p>{description}</p>
-                  <span>{stack}</span>
-                </article>
-              ))}
+            <div className="hero-visual" aria-hidden="true">
+              <div className="artwork" />
+              <span className="corner corner-tl" /><span className="corner corner-tr" /><span className="corner corner-bl" /><span className="corner corner-br" />
+              <div className="visual-title"><CircuitBoard size={16} /> GPU ARCHITECTURE</div>
+              <div className="visual-note"><span /> ACCELERATED COMPUTE</div>
             </div>
           </div>
         </section>
@@ -127,6 +114,23 @@ function App() {
             </ul>
           </div>
         </div>
+
+        <section className="shell section workloads" id="workloads" aria-labelledby="workload-title">
+          <div className="section-heading">
+            <div><p className="eyebrow section-label">WORKLOADS</p><h2 id="workload-title">What are you running?</h2></div>
+            <p>Start with your workload to find an example GPU configuration.</p>
+          </div>
+          <div className="workload-grid">
+            {workloads.map(({ title, description, stack, icon: Icon, gpu: recommendedGpu }) => (
+              <article className="workload" key={title}>
+                <div className="workload-top"><Icon size={24} strokeWidth={1.6} /><a href="#gpus" aria-label={`Explore GPUs for ${title}`} onClick={() => setGpuId(recommendedGpu)}><ArrowUpRight size={20} /></a></div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+                <span>{stack}</span>
+              </article>
+            ))}
+          </div>
+        </section>
 
         <section className="gpu-section" id="gpus" aria-labelledby="gpu-title">
           <div className="shell section">
