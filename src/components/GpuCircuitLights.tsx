@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 
+const artworkUrl = `${import.meta.env.BASE_URL}gpu-hero-unlit.webp`;
+
 export function GpuCircuitLights() {
   const layer = useRef<HTMLDivElement>(null);
 
@@ -15,16 +17,24 @@ export function GpuCircuitLights() {
   }, []);
 
   return (
-    <div ref={layer} className="gpu-circuit-lights" aria-hidden="true">
-      <svg viewBox="0 0 1344 896" fill="none">
-        {/* Paths use the original GPU image coordinates so they follow its traces. */}
-        <path pathLength="100" d="M82 617 286 505 319 486" />
-        <path pathLength="100" d="M191 785 478 611" />
-        <path pathLength="100" d="M942 856 867 786 865 734 833 704" />
-        <path pathLength="100" d="M1155 800 973 647" />
-        <path pathLength="100" d="M1310 15 1015 187 1015 221" />
-        <path pathLength="100" d="M1344 275 1275 321 1150 321 1098 349" />
-      </svg>
+    <div ref={layer} className="gpu-backdrop" aria-hidden="true">
+      <div className="gpu-backdrop-artwork">
+        <img src={artworkUrl} alt="" width="1536" height="1024" />
+        <svg className="gpu-circuit-lights" viewBox="0 0 1536 1024" fill="none">
+          <path pathLength="100" d="M81 695 254 597 272 596 366 543" />
+          <path pathLength="100" d="M174 920 510 719 550 691" />
+          <path pathLength="100" d="M1076 984 1008 916 1008 784 961 744" />
+          <path pathLength="100" d="M30 439 103 394 236 394 289 367 334 367" />
+          <path pathLength="100" d="M318 4 451 82 451 195 532 257" />
+          <g className="gpu-circuit-violet">
+            <path pathLength="100" d="M1438 934 1346 934 1085 716" />
+            <path pathLength="100" d="M1490 12 1176 182 1176 244 1141 265" />
+            <path pathLength="100" d="M1536 309 1470 349 1324 349 1241 396" />
+            <path pathLength="100" d="M1536 620 1353 619 1275 559 1251 559" />
+            <path pathLength="100" d="M1536 733 1434 733 1383 697 1308 695 1223 634" />
+          </g>
+        </svg>
+      </div>
     </div>
   );
 }

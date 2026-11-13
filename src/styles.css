@@ -51,53 +51,47 @@ h1, h2, h3, p { margin: 0; }
 .button-quiet:hover { border-color: var(--control-line); color: var(--text); }
 
 .hero {
-  --gpu-background-x: 50%;
   position: relative;
   isolation: isolate;
   overflow: hidden;
   background: radial-gradient(ellipse at 78% 52%, #1e1733 0%, #100d1a 37%, var(--base) 72%);
 }
-.hero::before {
-  content: '';
+.gpu-backdrop {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background:
-    linear-gradient(90deg, #0c0b12b3, transparent 75%),
-    url('/gpu-hero.webp') var(--gpu-background-x) center / cover no-repeat;
-  opacity: .44;
+  container-type: size;
   pointer-events: none;
 }
+
+.gpu-backdrop-artwork {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: min(100%, 162cqh);
+  transform: translateY(-50%);
+  mask-image:
+    linear-gradient(90deg, transparent, #000 22% 90%, transparent),
+    linear-gradient(180deg, transparent, #000 10% 85%, transparent);
+  mask-composite: intersect;
+}
+
+.gpu-backdrop-artwork img { width: 100%; height: auto; opacity: .60; }
 .gpu-circuit-lights { display: none; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .gpu-circuit-lights {
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    display: block;
-    container-type: size;
-    pointer-events: none;
-  }
-
-  .gpu-circuit-lights svg {
-    position: absolute;
-    top: 50%;
-    left: var(--gpu-background-x);
-    /* Match the 3:2 image's cover scale and crop at every viewport size. */
-    width: max(100%, 150cqh);
-    height: auto;
-    transform: translate(calc(-1 * var(--gpu-background-x)), -50%);
-  }
+  .gpu-circuit-lights { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 
   .gpu-circuit-lights path {
-    stroke: #a8fbd9;
-    stroke-width: 1.8;
+    color: #7bf4c7;
+    stroke: currentColor;
+    stroke-width: 3.4;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-dasharray: 12 100;
-    filter: drop-shadow(0 0 3px #65edbc);
-    animation: gpu-circuit-pulse 3.4s linear infinite alternate paused;
+    stroke-dasharray: 15 100;
+    filter: drop-shadow(0 0 4px currentColor);
+    opacity: 0;
+    animation: gpu-circuit-pulse 3.8s linear infinite alternate paused;
   }
 
   .gpu-circuit-lights path:nth-child(even) {
@@ -105,14 +99,14 @@ h1, h2, h3, p { margin: 0; }
     animation-delay: -1.4s;
   }
 
-  .gpu-circuit-lights path:nth-child(3n) { animation-delay: -2.1s; }
-  .gpu-circuit-lights path:nth-child(n+4) { stroke: #c7a5ff; filter: drop-shadow(0 0 3px #9f6aff); }
-  .gpu-circuit-lights[data-visible] path { animation-play-state: running; }
+  .gpu-circuit-lights path:nth-child(3n) { animation-delay: -2.5s; }
+  .gpu-circuit-lights .gpu-circuit-violet path { color: #b18aff; }
+  .gpu-backdrop[data-visible] path { animation-play-state: running; }
 }
 
 @keyframes gpu-circuit-pulse {
-  0% { stroke-dashoffset: 12; opacity: 0; }
-  16%, 78% { opacity: .64; }
+  0% { stroke-dashoffset: 15; opacity: 0; }
+  16%, 78% { opacity: .68; }
   100% { stroke-dashoffset: -100; opacity: 0; }
 }
 
@@ -203,9 +197,12 @@ select:hover { border-color: var(--lavender); }
 }
 
 @media (max-width: 760px) {
-  .hero { --gpu-background-x: 58%; }
-  .hero::before {
-    background-image: linear-gradient(180deg, #0c0b12b3, transparent 82%), url('/gpu-hero.webp');
+  .gpu-backdrop-artwork {
+    top: auto;
+    right: 50%;
+    bottom: 0;
+    width: min(120%, 96cqh);
+    transform: translateX(50%);
   }
   .shell { width: calc(100% - 40px); }
   .header-inner { height: 64px; display: flex; justify-content: space-between; }
