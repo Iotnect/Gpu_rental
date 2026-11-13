@@ -1,7 +1,6 @@
 import { CrystalizedLogo } from './effects/CrystalizedLogo';
-import ParticleText from './effects/ParticleText';
-import { heroGather } from './effects/heroAnimation';
 import GradientASCII from './effects/GradientASCII';
+import TechText from './effects/TechText';
 import './Hero.css';
 
 const logoUrl = `${import.meta.env.BASE_URL}assets/iotnect-logo.jpeg`;
@@ -31,23 +30,14 @@ export function Hero() {
           <CrystalizedLogo src={logoUrl} color="#F25BD0" size={0.77} crackle={0.85} fill={0.5} interactive hoverStrength={0.7} />
         </div>
         <div className="hero-wordmark" aria-hidden="true">
-          <ParticleText
+          <TechText
             text={brandName}
-            fontSize="clamp(3.5rem, 9vw, 6rem)"
+            fontSize={96}
             fontWeight={800}
-            fontFamily="Manrope, sans-serif"
             color="#F7E8FF"
-            highlightColor="#F25BD0"
-            particleSize={2}
-            density={3}
-            scatter={heroGather.scatter}
-            gatherDuration={heroGather.duration}
-            stagger={heroGather.stagger}
-            pointerRepel={28}
-            repelRadius={90}
-            idleDrift={0.5}
-            trigger="mount"
-            glow
+            accentColor="#F25BD0"
+            intro="assemble"
+            labels={false}
           />
         </div>
         <p className="hero-brand-tagline">INTELLIGENCE. CONNECTED.</p>
