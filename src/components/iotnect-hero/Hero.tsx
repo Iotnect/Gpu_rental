@@ -1,7 +1,7 @@
 import { CrystalizedLogo } from './effects/CrystalizedLogo';
 import ParticleText from './effects/ParticleText';
 import { heroGather } from './effects/heroAnimation';
-import Aurora from './effects/Aurora';
+import GradientASCII from './effects/GradientASCII';
 import './Hero.css';
 
 const logoUrl = `${import.meta.env.BASE_URL}assets/iotnect-logo.jpeg`;
@@ -10,18 +10,19 @@ const brandName = 'Iotnect';
 export function Hero() {
   return (
     <section className="iotnect-hero" aria-labelledby="iotnect-hero-title">
-      <div className="hero-aurora" aria-hidden="true">
-        <Aurora
-          colorStops={['#7431BC', '#F25BD0', '#8B45DB']}
-          amplitude={1.5}
-          blend={0.45}
-          speed={0.8}
-          height={0.42}
-          glow={0.8}
-          brightness={1.15}
-          layers={2}
-          opacity={0.8}
-          mouseInteraction
+      <div className="hero-background" aria-hidden="true">
+        <GradientASCII
+          colors={['#160926', '#6e299e', '#c94aa9', '#793bc3']}
+          shape="horizon"
+          cellSize={15}
+          glyphOpacity={0.65}
+          glow={0.35}
+          flicker={0.08}
+          speed={0.55}
+          gradientOpacity={0.64}
+          clickEffect="none"
+          intro={false}
+          dpr={1}
         />
       </div>
       <div className="hero-brand">

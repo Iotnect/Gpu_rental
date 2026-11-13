@@ -39,9 +39,8 @@
 .iotnect-hero .crystalized-logo[data-ready=true][data-intro-complete=false] .plasma-logo-canvas { opacity: 0; }
 .iotnect-hero .crystalized-logo[data-intro-complete=true] .logo-particle-intro { opacity: 0; }
 
-.iotnect-hero .hero-aurora { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 30% 35%, #7431bc38, transparent 58%), radial-gradient(ellipse at 72% 42%, #f25bd02e, transparent 55%); }
-.iotnect-hero .hero-aurora::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #0a051430, transparent 25%, transparent 65%, #0a0514); }
-.iotnect-hero .hero-aurora .aurora-canvas { mix-blend-mode: screen; }
+.iotnect-hero .hero-background { position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse at 30% 35%, #7431bc38, transparent 58%), radial-gradient(ellipse at 72% 42%, #f25bd02e, transparent 55%); }
+.iotnect-hero .hero-background::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, #0a051460, transparent 26%, #0a051425 55%, #0a0514 95%); }
 
 @media (max-width: 1050px) {
   .iotnect-hero .hero-brand { width: calc(100% - 56px); }
