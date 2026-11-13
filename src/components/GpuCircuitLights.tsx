@@ -21,17 +21,18 @@ export function GpuCircuitLights() {
       <div className="gpu-backdrop-artwork">
         <img src={artworkUrl} alt="" width="1536" height="1024" />
         <svg className="gpu-circuit-lights" viewBox="0 0 1536 1024" fill="none">
-          <path pathLength="100" d="M81 695 254 597 272 596 366 543" />
-          <path pathLength="100" d="M174 920 510 719 550 691" />
-          <path pathLength="100" d="M1076 984 1008 916 1008 784 961 744" />
-          <path pathLength="100" d="M30 439 103 394 236 394 289 367 334 367" />
-          <path pathLength="100" d="M318 4 451 82 451 195 532 257" />
+          {/* Trace coordinates are measured on gpu-hero-unlit.webp. */}
+          <path pathLength="100" d="M108 676 231 607 268 607 364 554" />
+          <path pathLength="100" d="M244 870 543 692" />
+          <path pathLength="100" d="M1060 980 989 912 987 804 947 771" />
+          <path pathLength="100" d="M45 442 104 407 236 407 289 378 336 378" />
+          <path pathLength="100" d="M374 24 499 94 488 184 548 223" />
           <g className="gpu-circuit-violet">
-            <path pathLength="100" d="M1438 934 1346 934 1085 716" />
-            <path pathLength="100" d="M1490 12 1176 182 1176 244 1141 265" />
-            <path pathLength="100" d="M1536 309 1470 349 1324 349 1241 396" />
-            <path pathLength="100" d="M1536 620 1353 619 1275 559 1251 559" />
-            <path pathLength="100" d="M1536 733 1434 733 1383 697 1308 695 1223 634" />
+            <path pathLength="100" d="M1398 923 1357 891 1111 695" />
+            <path pathLength="100" d="M1478 24 1148 213 1148 254 1125 267" />
+            <path pathLength="100" d="M1535 326 1470 364 1321 365 1248 406" />
+            <path pathLength="100" d="M1534 590 1402 588 1323 534 1281 533" />
+            <path pathLength="100" d="M1534 735 1435 735 1382 697 1277 694 1173 622" />
           </g>
         </svg>
       </div>
