@@ -2,8 +2,9 @@ import { StrictMode, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   Activity, ArrowDown, ArrowDownRight, ArrowRight, ArrowUpRight, Box, ChevronDown,
-  CircuitBoard, Cpu, Download, Layers3, Menu, Network, Terminal, X, Zap,
+  Cpu, Download, Layers3, Menu, Network, Terminal, X, Zap,
 } from 'lucide-react';
+import { GpuCircuitLights } from './components/GpuCircuitLights';
 import { Hero } from './components/iotnect-hero/Hero';
 import './styles.css';
 
@@ -87,6 +88,7 @@ function App() {
         <Hero />
 
         <section className="hero" id="gpu-intro" aria-labelledby="hero-title">
+          <GpuCircuitLights />
           <div className="shell hero-inner">
             <div className="hero-copy">
               <p className="eyebrow hero-label"><span /> ON-DEMAND GPU RENTAL</p>
@@ -96,11 +98,6 @@ function App() {
                 <a className="button button-primary" href="#gpus">Explore GPUs <ArrowRight size={18} /></a>
                 <a className="button button-quiet" href="#workloads">View workloads <ArrowDown size={16} /></a>
               </div>
-            </div>
-            <div className="hero-visual" aria-hidden="true">
-              <span className="corner corner-tl" /><span className="corner corner-tr" /><span className="corner corner-bl" /><span className="corner corner-br" />
-              <div className="visual-title"><CircuitBoard size={16} /> GPU ARCHITECTURE</div>
-              <div className="visual-note"><span /> ACCELERATED COMPUTE</div>
             </div>
           </div>
         </section>
