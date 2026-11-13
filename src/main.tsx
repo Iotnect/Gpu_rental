@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { GpuCircuitLights } from './components/GpuCircuitLights';
 import { Hero } from './components/iotnect-hero/Hero';
+import Topography from './components/topography/Topography';
 import './styles.css';
 
 const gpus = [
@@ -162,19 +163,24 @@ function App() {
           </div>
         </section>
 
-        <section className="shell section faq" id="faq" aria-labelledby="faq-title">
-          <div><p className="eyebrow section-label">FAQ</p><h2 id="faq-title">Before you rent.</h2></div>
-          <div className="questions">
-            {faqs.map(({ question, answer }) => <details key={question}><summary>{question}<ChevronDown size={19} aria-hidden="true" /></summary><p>{answer}</p></details>)}
+        <div className="closing-region">
+          <div className="closing-terrain" aria-hidden="true">
+            <Topography color="#9b72eb" lineCount={29} tilt={36} speed={0.18} glow={0.35} opacity={0.88} mouseInteraction={false} intro={false} dpr={1} />
           </div>
-        </section>
+          <section className="shell section faq" id="faq" aria-labelledby="faq-title">
+            <div><p className="eyebrow section-label">FAQ</p><h2 id="faq-title">Before you rent.</h2></div>
+            <div className="questions">
+              {faqs.map(({ question, answer }) => <details key={question}><summary>{question}<ChevronDown size={19} aria-hidden="true" /></summary><p>{answer}</p></details>)}
+            </div>
+          </section>
 
-        <section className="shell closing" aria-labelledby="closing-title">
-          <div className="closing-panel">
-            <div><h2 id="closing-title">Plan your next run.</h2><p>Pick a GPU and see what your run could cost.</p></div>
-            <a className="button button-primary" href="#gpus">Estimate GPU cost <ArrowDownRight size={18} /></a>
-          </div>
-        </section>
+          <section className="shell closing" aria-labelledby="closing-title">
+            <div className="closing-panel">
+              <div><h2 id="closing-title">Plan your next run.</h2><p>Pick a GPU and see what your run could cost.</p></div>
+              <a className="button button-primary" href="#gpus">Estimate GPU cost <ArrowDownRight size={18} /></a>
+            </div>
+          </section>
+        </div>
       </main>
 
       <footer className="footer"><div className="shell footer-inner"><Brand /><p>GPU rental for AI and accelerated workloads.</p><a href="#top">Back to top ↑</a></div></footer>
