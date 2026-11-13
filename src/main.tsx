@@ -34,7 +34,7 @@ const ringgit = new Intl.NumberFormat('en-MY', { style: 'currency', currency: 'M
 const brandName = 'NeoPark';
 
 function Brand() {
-  return <a className="brand" href="#top"><img src={`${import.meta.env.BASE_URL}neopark.svg`} alt="" width="32" height="32" />{brandName}</a>;
+  return <a className="brand" href="#top"><img src={`${import.meta.env.BASE_URL}assets/iotnect-logo.jpeg`} alt="" width="32" height="32" />{brandName}</a>;
 }
 
 function App() {

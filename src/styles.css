@@ -36,6 +36,7 @@ h1, h2, h3, p { margin: 0; }
 .site-header { position: sticky; top: 0; z-index: 3; background: #0c0b12f2; border-bottom: 1px solid var(--line); backdrop-filter: blur(16px); }
 .header-inner { height: 72px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 28px; }
 .brand { display: inline-flex; justify-self: start; align-items: center; gap: 9px; min-height: 44px; font-size: 1.3rem; font-weight: 700; letter-spacing: -.055em; }
+.brand img { object-fit: contain; border-radius: 5px; background: #fff; }
 .main-nav { display: flex; gap: 34px; }
 .main-nav a, .footer a:last-child { display: inline-flex; align-items: center; min-height: 44px; font-size: .88rem; color: var(--muted); }
 .main-nav a:hover, .footer a:last-child:hover { color: var(--mint); }
@@ -54,7 +55,7 @@ h1, h2, h3, p { margin: 0; }
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: #080d17;
+  background: radial-gradient(ellipse at 78% 52%, #1e1733 0%, #100d1a 37%, var(--base) 72%);
 }
 .gpu-backdrop {
   position: absolute;
@@ -63,56 +64,43 @@ h1, h2, h3, p { margin: 0; }
   container-type: size;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at 71% 25%, #24566b, transparent 74%),
-    radial-gradient(circle, #8ccde44a .8px, transparent 1.2px) 0 0 / 10px 10px,
-    #0e2636;
+    linear-gradient(90deg, #0c0b12a6, #0c0b124d 55%, #0c0b1266),
+    url('/gpu-board-texture.webp') center / cover no-repeat;
 }
 
 .gpu-backdrop::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, #080d17eb, #080d17c9 34%, #080d1738 59%, #080d1710);
+  background: linear-gradient(90deg, #0c0b125c, #0c0b122e 35%, transparent 62%);
 }
 
-.gpu-board {
-  --gpu-chip-position: 63.125%;
+.gpu-backdrop-artwork {
   position: absolute;
   top: 50%;
-  left: 71.25%;
-  width: max(100%, 250cqh);
-  height: auto;
-  overflow: visible;
-  transform: translate(calc(-1 * var(--gpu-chip-position)), -50%);
+  right: max(0px, calc((100% - 1520px) / 2));
+  width: min(85%, 156cqh);
+  transform: translateY(-50%);
+  mask-image:
+    linear-gradient(90deg, transparent, #000 22% 84%, transparent),
+    linear-gradient(180deg, transparent, #000 9% 85%, transparent);
+  mask-composite: intersect;
 }
 
-.gpu-board-traces { stroke: #86b7c5; stroke-width: 1.4; stroke-linejoin: round; }
-.gpu-board-routing { stroke: #6094a6; stroke-width: 1.15; opacity: .6; }
-.gpu-board-traces [data-bank="1"] { stroke: #9bbfca; }
-.gpu-board-traces [data-bank="3"] { stroke: #6c9fac; }
-.gpu-component-outline { stroke: #6196a5; stroke-width: 1; }
-.gpu-component-pad { stroke: #8eb6bd; stroke-width: 2; }
-.gpu-component-body { fill: #10212c; stroke: #416372; stroke-width: 1.2; }
-.gpu-chip-socket { fill: #234655; stroke: #6f9dad; stroke-width: 2; }
-.gpu-chip-package { fill: url('#gpu-package-metal'); stroke: #698591; stroke-width: 2; }
-.gpu-chip-pin { stroke: #a1bec7; stroke-width: 2.5; }
-.gpu-chip-cover { fill: #10191f; stroke: #30454e; stroke-width: 2; }
-.gpu-chip-die { fill: #52606a; stroke: #10191f; stroke-width: 3; }
-.gpu-chip-grid { stroke: #a5afb5; stroke-width: .95; }
-.gpu-chip-marker { fill: #91bac2; }
+.gpu-backdrop-artwork img { width: 100%; height: auto; filter: brightness(.72); }
 .gpu-circuit-lights { display: none; }
 
 @media (prefers-reduced-motion: no-preference) {
-  .gpu-circuit-lights { display: inline; }
+  .gpu-circuit-lights { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 
   .gpu-circuit-lights path {
-    color: #9ef6ff;
+    color: #7bf4c7;
     stroke: currentColor;
     stroke-width: 3.4;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-dasharray: 11 100;
-    filter: drop-shadow(0 0 3px #b3faff) drop-shadow(0 0 8px #29d8ff);
+    stroke-dasharray: 15 100;
+    filter: drop-shadow(0 0 4px currentColor);
     opacity: 0;
     animation: gpu-circuit-pulse 3.8s linear infinite alternate paused;
   }
@@ -123,12 +111,13 @@ h1, h2, h3, p { margin: 0; }
   }
 
   .gpu-circuit-lights path:nth-child(3n) { animation-delay: -2.5s; }
+  .gpu-circuit-lights .gpu-circuit-violet path { color: #b18aff; }
   .gpu-backdrop[data-visible] path { animation-play-state: running; }
 }
 
 @keyframes gpu-circuit-pulse {
-  0% { stroke-dashoffset: 11; opacity: 0; }
-  16%, 78% { opacity: .92; }
+  0% { stroke-dashoffset: 15; opacity: 0; }
+  16%, 78% { opacity: .68; }
   100% { stroke-dashoffset: -100; opacity: 0; }
 }
 
@@ -220,15 +209,15 @@ select:hover { border-color: var(--lavender); }
 
 @media (max-width: 760px) {
   .gpu-backdrop::after {
-    background: linear-gradient(180deg, #080d17ed, #080d17c7 42%, transparent 68%);
+    background: linear-gradient(180deg, #0c0b1259, #0c0b1238 42%, transparent 66%);
   }
 
-  .gpu-board {
+  .gpu-backdrop-artwork {
     top: auto;
-    left: 50%;
+    right: 50%;
     bottom: 0;
-    width: 190%;
-    transform: translateX(calc(-1 * var(--gpu-chip-position)));
+    width: min(116%, 96cqh);
+    transform: translateX(50%);
   }
   .shell { width: calc(100% - 40px); }
   .header-inner { height: 64px; display: flex; justify-content: space-between; }
