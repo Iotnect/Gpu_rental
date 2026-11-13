@@ -98,7 +98,6 @@ function App() {
               </div>
             </div>
             <div className="hero-visual" aria-hidden="true">
-              <div className="artwork" />
               <span className="corner corner-tl" /><span className="corner corner-tr" /><span className="corner corner-bl" /><span className="corner corner-br" />
               <div className="visual-title"><CircuitBoard size={16} /> GPU ARCHITECTURE</div>
               <div className="visual-note"><span /> ACCELERATED COMPUTE</div>
