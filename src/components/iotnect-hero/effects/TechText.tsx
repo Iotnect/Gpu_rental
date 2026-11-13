@@ -174,6 +174,7 @@ const TechText = ({
     const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     let width = 1;
     let height = 1;
+    let layout = { x: 0, y: 0, width: 1, height: 1 };
     let dpr = 1;
     let raf = 0;
     let last = performance.now();
@@ -197,7 +198,7 @@ const TechText = ({
     let guideAlpha = 0;
     let hasDrawn = false;
     const kicks: Kick[] = [];
-    const press = { x: 0, y: 0, time: 0, index: -1 };
+    const press = { x: 0, y: 0, time: 0, index: -1, pointerId: -1 };
     const pointer = { x: 0, y: 0, inside: false };
     const grab = { x: 0, y: 0 };
     const lens = { x: 0, y: 0 };
@@ -262,6 +263,7 @@ const TechText = ({
     };
 
     const ensureLayout = (s: Settings, ink: string): Word => {
+      const { x: layoutX, y: layoutY, width: layoutWidth, height: layoutHeight } = layout;
       const key = [
         s.text,
         family(s),
@@ -274,8 +276,10 @@ const TechText = ({
         s.dashGap,
         s.strokeWidth,
         s.lineStyle,
-        width,
-        height,
+        layoutX,
+        layoutY,
+        layoutWidth,
+        layoutHeight,
         dpr
       ].join('|');
       if (key === layoutKey && word) return word;
@@ -291,19 +295,19 @@ const TechText = ({
       let m = probe.measureText(s.text);
       const fit = Math.min(
         1,
-        Math.min(width * 0.9, Math.max(1, width - 64)) / Math.max(m.actualBoundingBoxLeft + m.actualBoundingBoxRight, 1),
-        (height * 0.66) / Math.max(m.actualBoundingBoxAscent + m.actualBoundingBoxDescent, 1)
+        Math.min(layoutWidth * 0.9, Math.max(1, layoutWidth - 64)) / Math.max(m.actualBoundingBoxLeft + m.actualBoundingBoxRight, 1),
+        (layoutHeight * 0.66) / Math.max(m.actualBoundingBoxAscent + m.actualBoundingBoxDescent, 1)
       );
       const size = s.fontSize * fit;
       setFont(probe, s, size);
       m = probe.measureText(s.text);
       const inkWidth = m.actualBoundingBoxLeft + m.actualBoundingBoxRight;
       const inkHeight = m.actualBoundingBoxAscent + m.actualBoundingBoxDescent;
-      const margin = width * 0.05;
+      const margin = layoutWidth * 0.05;
       const start =
-        s.align === 'left' ? margin : s.align === 'right' ? width - margin - inkWidth : (width - inkWidth) / 2;
-      const x = start + m.actualBoundingBoxLeft;
-      const baseline = (height - inkHeight) / 2 + m.actualBoundingBoxAscent;
+        s.align === 'left' ? margin : s.align === 'right' ? layoutWidth - margin - inkWidth : (layoutWidth - inkWidth) / 2;
+      const x = layoutX + start + m.actualBoundingBoxLeft;
+      const baseline = layoutY + (layoutHeight - inkHeight) / 2 + m.actualBoundingBoxAscent;
       const xHeight = baseline - probe.measureText('x').actualBoundingBoxAscent;
       const capHeight = baseline - probe.measureText('H').actualBoundingBoxAscent;
       const ascender = baseline - probe.measureText('d').actualBoundingBoxAscent;
@@ -592,7 +596,7 @@ const TechText = ({
       const pad = Math.max(12, view.size * 0.12);
       const x1 = Math.round(view.left - pad);
       const x2 = Math.round(view.right + pad);
-      const room = width - x2 > x1;
+      const room = layout.x + layout.width - x2 > x1 - layout.x;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.strokeStyle = accent;
       ctx.fillStyle = accent;
@@ -764,8 +768,16 @@ const TechText = ({
       if (!s) return;
       if (sizeDirty) {
         sizeDirty = false;
-        width = Math.max(1, container.clientWidth);
-        height = Math.max(1, container.clientHeight);
+        const surface = canvas.getBoundingClientRect();
+        const anchor = container.getBoundingClientRect();
+        width = Math.max(1, surface.width);
+        height = Math.max(1, surface.height);
+        layout = {
+          x: anchor.left - surface.left,
+          y: anchor.top - surface.top,
+          width: Math.max(1, container.clientWidth),
+          height: Math.max(1, container.clientHeight)
+        };
         dpr = Math.min(window.devicePixelRatio || 1, 2);
         const pixelWidth = Math.round(width * dpr);
         const pixelHeight = Math.round(height * dpr);
@@ -822,8 +834,11 @@ const TechText = ({
       let moving = false;
       glyphs.forEach((glyph, i) => {
         if (i === dragging) {
-          glyph.offset.x = approach(glyph.offset.x, pointer.x - grab.x, dt, 0.03);
-          glyph.offset.y = approach(glyph.offset.y, pointer.y - grab.y, dt, 0.03);
+          const { x1, y1, x2, y2 } = glyph.box;
+          const targetX = Math.max(2 - x1, Math.min(pointer.x - grab.x, width - x2 - 2));
+          const targetY = Math.max(2 - y1, Math.min(pointer.y - grab.y, height - y2 - 2));
+          glyph.offset.x = approach(glyph.offset.x, targetX, dt, 0.03);
+          glyph.offset.y = approach(glyph.offset.y, targetY, dt, 0.03);
           glyph.velocity.x = 0;
           glyph.velocity.y = 0;
           moving = true;
@@ -979,11 +994,12 @@ const TechText = ({
     };
 
     const locate = (e: PointerEvent) => {
-      const rect = container.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
       pointer.x = e.clientX - rect.left;
       pointer.y = e.clientY - rect.top;
     };
     const onMove = (e: PointerEvent) => {
+      if (press.pointerId !== -1 && e.pointerId !== press.pointerId) return;
       locate(e);
       pointer.inside = true;
       wake();
@@ -994,31 +1010,32 @@ const TechText = ({
       wake();
     };
     const onDown = (e: PointerEvent) => {
+      if (!e.isPrimary || e.button !== 0 || press.pointerId !== -1) return;
       locate(e);
       pointer.inside = true;
       const s = settingsRef.current;
-      const primary = e.pointerType !== 'mouse' || e.button === 0;
-      const index = introducing || !primary ? -1 : glyphAt(pointer.x, pointer.y);
+      const index = introducing ? -1 : glyphAt(pointer.x, pointer.y);
+      if (index < 0 || motionQuery.matches) return;
       press.x = pointer.x;
       press.y = pointer.y;
       press.time = performance.now();
       press.index = index;
-      if (s?.draggable && index >= 0 && !motionQuery.matches) {
+      press.pointerId = e.pointerId;
+      if (s?.draggable) {
         dragging = index;
         grab.x = pointer.x - glyphs[index].offset.x;
         grab.y = pointer.y - glyphs[index].offset.y;
-        container.setPointerCapture?.(e.pointerId);
       }
+      container.setPointerCapture(e.pointerId);
       wake();
     };
     const onUp = (e: PointerEvent) => {
-      if (dragging >= 0) {
-        dragging = -1;
-        container.releasePointerCapture?.(e.pointerId);
-        const rect = container.getBoundingClientRect();
-        pointer.inside =
-          e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
-      }
+      if (e.pointerId !== press.pointerId) return;
+      dragging = -1;
+      locate(e);
+      const rect = container.getBoundingClientRect();
+      pointer.inside = e.type === 'pointerup' && e.pointerType !== 'touch' &&
+        e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
       if (
         e.type === 'pointerup' &&
         press.index >= 0 &&
@@ -1026,10 +1043,10 @@ const TechText = ({
         !motionQuery.matches &&
         performance.now() - press.time < 450
       ) {
-        const rect = container.getBoundingClientRect();
-        if (Math.hypot(e.clientX - rect.left - press.x, e.clientY - rect.top - press.y) < 6) kick(press.index);
+        if (Math.hypot(pointer.x - press.x, pointer.y - press.y) < 6) kick(press.index);
       }
       press.index = -1;
+      press.pointerId = -1;
       wake();
     };
 
@@ -1038,10 +1055,12 @@ const TechText = ({
     container.addEventListener('pointerdown', onDown, { passive: true });
     container.addEventListener('pointerup', onUp, { passive: true });
     container.addEventListener('pointercancel', onUp, { passive: true });
+    container.addEventListener('lostpointercapture', onUp, { passive: true });
     container.addEventListener('pointerleave', onLeave, { passive: true });
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(container);
+    resizeObserver.observe(canvas);
     window.addEventListener('resize', resize, { passive: true });
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
@@ -1075,6 +1094,7 @@ const TechText = ({
       container.removeEventListener('pointerdown', onDown);
       container.removeEventListener('pointerup', onUp);
       container.removeEventListener('pointercancel', onUp);
+      container.removeEventListener('lostpointercapture', onUp);
       container.removeEventListener('pointerleave', onLeave);
     };
   }, []);
