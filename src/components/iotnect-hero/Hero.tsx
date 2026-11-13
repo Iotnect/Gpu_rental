@@ -5,7 +5,7 @@ import GradientASCII from './effects/GradientASCII';
 import './Hero.css';
 
 const logoUrl = `${import.meta.env.BASE_URL}assets/iotnect-logo.jpeg`;
-const brandName = 'Iotnect';
+const brandName = 'NeoPark';
 
 export function Hero() {
   return (
@@ -19,7 +19,7 @@ export function Hero() {
           glow={0.35}
           flicker={0.08}
           speed={0.55}
-          gradientOpacity={0.64}
+          gradientOpacity={0.72}
           clickEffect="none"
           intro={false}
           dpr={1}
