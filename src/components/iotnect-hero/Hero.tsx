@@ -15,11 +15,11 @@ export function Hero() {
           colors={['#160926', '#6e299e', '#c94aa9', '#793bc3']}
           shape="horizon"
           cellSize={15}
-          glyphOpacity={0.65}
+          glyphOpacity={0.84}
           glow={0.35}
           flicker={0.08}
-          speed={0.55}
-          gradientOpacity={0.72}
+          speed={0.78}
+          gradientOpacity={0.94}
           clickEffect="none"
           intro={false}
           dpr={1}
